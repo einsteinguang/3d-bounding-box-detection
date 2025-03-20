@@ -1,0 +1,60 @@
+dataset:
+  data_dir: "dl_challenge"
+  train_ratio: 0.9
+  transforms:
+    scale: 1.
+    sx: 0.
+    sy: 0.
+    sz: -1.
+    scale_var: 0.3
+    shift_var_x: 0.5
+    shift_var_y: 0.5
+    shift_var_z: 0.5
+    style: "normal"
+    img_down_scale: 0.7
+    use_color_jitter: true
+    color_jitter:
+      brightness: 0.2
+      contrast: 0.2
+      saturation: 0.2
+      hue: 0.1
+    padding_size_h: 715
+    padding_size_w: 1003
+    padding_mode: "constant"
+    use_gaussian_noise: true
+    gaussian_noise_std: 0.002
+    use_pc_noise: true
+    pc_noise_std: 0.002
+    n_sample_pc: 10000
+
+model:
+  image_encoder:
+    backbone: "resnet18"
+    freeze_backbone: False
+  d_model: 256
+  # pc encoder
+  pc_output_dim: 128
+  pc_hidden_dim: 512   # 128 for mlp, 512 for pointnet
+  pc_encoder_dropout: 0.1
+  pc_encoder_type: "pointnet"
+  # mask encoder
+  mask_output_dim: 128
+  # transformer decoder
+  n_decoder_layers: 3
+  n_heads: 8
+  dropout: 0.1
+  fusion_style: "late_fusion"
+  fusion_style_second_stage: "transformer"  # "concat" or "transformer"
+
+training:
+  batch_size: 5
+  epochs: 2500
+  lr_img_backbone: 0.00001
+  lr: 0.0002
+  weight_decay: 0.00001
+  eval_interval: 5
+  checkpoint_interval: 10
+  weight_center: 8.
+  weight_dims: 6.
+  weight_orient: 1.
+
